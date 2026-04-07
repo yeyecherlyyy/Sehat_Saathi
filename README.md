@@ -1,3 +1,5 @@
+Live deployment: https://sehat-saathi-two.vercel.app
+
 # 🏥 Sehat Saathi — AI-Powered Smart Healthcare for Rural India
 
 <div align="center">
