@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useLanguage } from '../context/LanguageContext';
 import { motion } from 'framer-motion';
 import { Phone, Shield, ArrowLeft, Heart } from 'lucide-react';
+import LanguageSelector from '../components/LanguageSelector';
 
 export default function Login() {
   const [step, setStep] = useState('phone'); // phone | otp
@@ -12,6 +14,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const { addToast } = useToast();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   const handleSendOtp = async (e) => {
@@ -58,16 +61,19 @@ export default function Login() {
         background: 'linear-gradient(135deg, #6B5CE7 0%, #8B7EF0 100%)',
         padding: '20px 20px 50px', borderRadius: '0 0 32px 32px', position: 'relative',
       }}>
-        <button onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)', marginBottom: '24px' }}>
-          <ArrowLeft size={20} /> Back
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <button onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)' }}>
+            <ArrowLeft size={20} /> {t('back')}
+          </button>
+          <LanguageSelector />
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Heart size={24} color="white" fill="white" />
           </div>
           <div>
-            <h1 style={{ font: 'var(--text-h2)', color: 'white' }}>Welcome Back</h1>
-            <p style={{ font: 'var(--text-body-sm)', color: 'rgba(255,255,255,0.8)' }}>Login to Sehat Saathi</p>
+            <h1 style={{ font: 'var(--text-h2)', color: 'white' }}>{t('welcomeBack')}</h1>
+            <p style={{ font: 'var(--text-body-sm)', color: 'rgba(255,255,255,0.8)' }}>{t('loginTo')}</p>
           </div>
         </div>
       </div>
@@ -79,10 +85,10 @@ export default function Login() {
         {step === 'phone' ? (
           <form onSubmit={handleSendOtp}>
             <div style={{ marginBottom: '24px' }}>
-              <label className="form-label">Mobile Number</label>
+              <label className="form-label">{t('mobileNumber')}</label>
               <div style={{ position: 'relative' }}>
                 <Phone size={20} style={{ position: 'absolute', left: '16px', top: '18px', color: 'var(--text-tertiary)' }} />
-                <input className="form-input" type="tel" placeholder="Enter 10-digit number"
+                <input className="form-input" type="tel" placeholder={t('enterPhone')}
                   value={phone} onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
                   style={{ paddingLeft: '48px' }} maxLength={10} id="phone-input" />
               </div>
@@ -93,7 +99,7 @@ export default function Login() {
               boxShadow: '0 8px 24px rgba(107,92,231,0.3)', transition: 'all 0.2s var(--ease)',
               opacity: loading ? 0.7 : 1,
             }}>
-              {loading ? 'Sending...' : 'Send OTP'}
+              {loading ? '...' : t('sendOtp')}
             </button>
           </form>
         ) : (
@@ -102,7 +108,7 @@ export default function Login() {
               Enter the OTP sent to <strong>+91 {phone}</strong>
             </p>
             <div style={{ marginBottom: '24px' }}>
-              <label className="form-label">OTP Code</label>
+              <label className="form-label">{t('otpCode')}</label>
               <div style={{ position: 'relative' }}>
                 <Shield size={20} style={{ position: 'absolute', left: '16px', top: '18px', color: 'var(--text-tertiary)' }} />
                 <input className="form-input" type="text" placeholder="123456"
@@ -110,7 +116,7 @@ export default function Login() {
                   style={{ paddingLeft: '48px', letterSpacing: '8px', fontFamily: 'var(--font-mono)' }} maxLength={6} id="otp-input" />
               </div>
               <p style={{ font: 'var(--text-caption)', color: 'var(--teal)', marginTop: '8px' }}>
-                💡 Demo OTP: <strong>123456</strong>
+                {t('demoOtp')}
               </p>
             </div>
             <button type="submit" disabled={loading} id="verify-btn" style={{
@@ -118,11 +124,11 @@ export default function Login() {
               borderRadius: 'var(--radius-pill)', font: 'var(--text-button)',
               boxShadow: '0 8px 24px rgba(107,92,231,0.3)', opacity: loading ? 0.7 : 1,
             }}>
-              {loading ? 'Verifying...' : 'Verify & Login'}
+              {loading ? '...' : t('verify')}
             </button>
             <button type="button" onClick={() => { setStep('phone'); setOtp(''); }}
               style={{ width: '100%', marginTop: '12px', padding: '12px', color: 'var(--text-secondary)', font: 'var(--text-body-sm)' }}>
-              Change number
+              {t('changeNumber')}
             </button>
           </form>
         )}
@@ -130,16 +136,16 @@ export default function Login() {
         {/* Divider */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', margin: '32px 0' }}>
           <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
-          <span style={{ font: 'var(--text-caption)', color: 'var(--text-tertiary)' }}>OR USE DEMO</span>
+          <span style={{ font: 'var(--text-caption)', color: 'var(--text-tertiary)' }}>{t('orUseDemo')}</span>
           <div style={{ flex: 1, height: '1px', background: 'var(--border)' }} />
         </div>
 
         {/* Demo Buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {[
-            { role: 'patient', label: '🧑 Login as Patient', sub: 'Rajesh Kumar · 9876500001', bg: 'var(--primary-bg)', color: 'var(--primary)' },
-            { role: 'doctor', label: '🩺 Login as Doctor', sub: 'Dr. Anil Verma · 9876500101', bg: 'var(--teal-bg)', color: 'var(--teal-dark)' },
-            { role: 'pharmacist', label: '💊 Login as Pharmacist', sub: 'Jan Aushadhi Kendra · 9876500201', bg: 'var(--peach-bg)', color: 'var(--peach-dark)' },
+            { role: 'patient', label: t('loginAsPatient'), sub: 'Rajesh Kumar · 9876500001', bg: 'var(--primary-bg)', color: 'var(--primary)' },
+            { role: 'doctor', label: t('loginAsDoctor'), sub: 'Dr. Anil Verma · 9876500101', bg: 'var(--teal-bg)', color: 'var(--teal-dark)' },
+            { role: 'pharmacist', label: t('loginAsPharmacist'), sub: 'Jan Aushadhi Kendra · 9876500201', bg: 'var(--peach-bg)', color: 'var(--peach-dark)' },
           ].map(d => (
             <button key={d.role} id={`demo-login-${d.role}`} onClick={() => handleDemo(d.role)} disabled={loading}
               style={{
