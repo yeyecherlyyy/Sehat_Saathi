@@ -27,6 +27,11 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = useCallback(async (role, phone, otp) => {
+    // Clear any existing auth state first (enables role-switching)
+    localStorage.removeItem('ss_token');
+    setToken(null);
+    setUser(null);
+
     let res;
     if (role && !phone) {
       res = await fetch(`${API_BASE}/api/auth/demo-login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ role }) });

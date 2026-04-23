@@ -47,9 +47,13 @@ export default function Login() {
   const handleDemo = async (role) => {
     setLoading(true);
     try {
-      await login(role);
-      const paths = { patient: '/patient', doctor: '/doctor', pharmacist: '/pharmacy' };
-      navigate(paths[role]);
+      const res = await login(role);
+      if (res?.token) {
+        const paths = { patient: '/patient', doctor: '/doctor', pharmacist: '/pharmacy' };
+        navigate(paths[role]);
+      } else {
+        addToast(res?.error || 'Demo login failed', 'error');
+      }
     } catch { addToast('Demo login failed', 'error'); }
     setLoading(false);
   };
