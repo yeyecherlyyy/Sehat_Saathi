@@ -5,8 +5,19 @@
 
 import jwt from 'jsonwebtoken';
 
-/** @constant {string} JWT_SECRET - Secret key for token signing. Uses env var in production. */
-const JWT_SECRET = process.env.JWT_SECRET || 'sehat-saathi-secret-key-2026';
+/**
+ * JWT_SECRET — must be set via environment variable in production.
+ * In development, falls back to a demo secret with a loud warning.
+ */
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const JWT_SECRET = (() => {
+  if (process.env.JWT_SECRET) return process.env.JWT_SECRET;
+  if (NODE_ENV === 'production') {
+    throw new Error('FATAL: JWT_SECRET environment variable is required in production. Set it in your deployment config (Render, Vercel, etc.).');
+  }
+  console.warn('⚠️  WARNING: JWT_SECRET not set — using insecure dev-only fallback. DO NOT deploy like this!');
+  return 'sehat-saathi-dev-secret-UNSAFE';
+})();
 
 /** @constant {string} TOKEN_EXPIRY - JWT token expiration duration */
 const TOKEN_EXPIRY = '7d';

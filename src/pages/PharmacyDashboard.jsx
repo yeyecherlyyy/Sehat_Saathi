@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth, API_BASE } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,6 +14,7 @@ const COLORS = ['#6B5CE7','#4ECDC4','#FF6B9D','#FFB347','#FF4757','#8B7EF0','#3D
 export default function PharmacyDashboard() {
   const { user, authFetch, logout } = useAuth();
   const { addToast } = useToast();
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [forecast, setForecast] = useState(null);
   const [tab, setTab] = useState('overview');
@@ -63,7 +65,7 @@ export default function PharmacyDashboard() {
             <p style={{ font:'var(--text-body-sm)', color:'rgba(255,255,255,0.8)' }}>Pharmacy Dashboard 💊</p>
             <h1 style={{ font:'var(--text-h2)', color:'white' }}>Jan Aushadhi Kendra</h1>
           </div>
-          <button onClick={() => { window.location.href = '/'; setTimeout(logout, 100); }} style={{ width:'40px',height:'40px',borderRadius:'12px',background:'rgba(255,255,255,0.15)',display:'flex',alignItems:'center',justifyContent:'center' }}>
+          <button id="logout-btn" onClick={() => { navigate('/'); setTimeout(logout, 100); }} style={{ width:'40px',height:'40px',borderRadius:'12px',background:'rgba(255,255,255,0.15)',display:'flex',alignItems:'center',justifyContent:'center',border:'none',cursor:'pointer' }}>
             <LogOut size={18} color="white" />
           </button>
         </div>

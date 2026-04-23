@@ -48,7 +48,7 @@ export default function PatientDashboard() {
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <LanguageSelector />
-            <button onClick={() => { navigate('/'); setTimeout(logout, 100); }} style={{ width:'40px', height:'40px', borderRadius:'12px', background:'rgba(255,255,255,0.15)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <button id="logout-btn" onClick={() => { navigate('/'); setTimeout(logout, 100); }} style={{ width:'40px', height:'40px', borderRadius:'12px', background:'rgba(255,255,255,0.15)', display:'flex', alignItems:'center', justifyContent:'center', border:'none', cursor:'pointer' }}>
               <LogOut size={18} color="white" />
             </button>
           </div>

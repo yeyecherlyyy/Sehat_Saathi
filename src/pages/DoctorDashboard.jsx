@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth, API_BASE } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,6 +15,7 @@ const sevBg = { CRITICAL:'#FFE8EA', URGENT:'#FFF0E5', MODERATE:'#FFF9E0', ROUTIN
 export default function DoctorDashboard() {
   const { user, authFetch, logout } = useAuth();
   const { addToast } = useToast();
+  const navigate = useNavigate();
   const [queue, setQueue] = useState([]);
   const [stats, setStats] = useState(null);
   const [currentPatient, setCurrentPatient] = useState(null);
@@ -97,7 +99,7 @@ export default function DoctorDashboard() {
             <p style={{ font:'var(--text-body-sm)', color:'rgba(255,255,255,0.8)' }}>Doctor Dashboard 🩺</p>
             <h1 style={{ font:'var(--text-h2)', color:'white' }}>{user?.profile?.name || 'Dr. Anil Verma'}</h1>
           </div>
-          <button onClick={() => { window.location.href = '/'; setTimeout(logout, 100); }} style={{ width:'40px',height:'40px',borderRadius:'12px',background:'rgba(255,255,255,0.15)',display:'flex',alignItems:'center',justifyContent:'center' }}>
+          <button id="logout-btn" onClick={() => { navigate('/'); setTimeout(logout, 100); }} style={{ width:'40px',height:'40px',borderRadius:'12px',background:'rgba(255,255,255,0.15)',display:'flex',alignItems:'center',justifyContent:'center',border:'none',cursor:'pointer' }}>
             <LogOut size={18} color="white" />
           </button>
         </div>
