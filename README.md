@@ -56,10 +56,7 @@ Over **65% of India's population** lives in rural areas, yet healthcare infrastr
 | **React 18** | UI framework with hooks and functional components |
 | **Vite 5** | Lightning-fast HMR dev server and optimised bundling |
 | **React Router v6** | Client-side routing with protected routes & RBAC |
-| **Framer Motion** | Micro-animations and page transitions |
-| **Recharts** | Data visualisation for pharmacy analytics |
-| **Leaflet.js** | Interactive disease surveillance mapping |
-| **Lucide React** | Consistent icon system (200+ icons) |
+| **Mapbox** | Interactive disease surveillance mapping |
 | **Web Speech API** | Browser-native speech recognition (multilingual) |
 
 ### Backend
@@ -68,20 +65,6 @@ Over **65% of India's population** lives in rural areas, yet healthcare infrastr
 | **Node.js 18+** | JavaScript runtime |
 | **Express 4** | RESTful API framework with middleware pipeline |
 | **Socket.IO 4** | Real-time bidirectional WebSocket for queue updates |
-| **JWT** | Stateless authentication with role-based access control |
-| **In-Memory DataStore** | Custom SQLite-compatible data layer (see [Architecture](#-architecture)) |
-
-### Code Quality
-| Practice | Implementation |
-|----------|---------------|
-| **JSDoc Documentation** | All server modules, middleware, and utility functions documented |
-| **Input Validation** | `validateBody()` middleware on all POST endpoints |
-| **XSS Prevention** | `sanitize()` utility strips HTML tags from user input |
-| **Error Handling** | Centralized `errorHandler` middleware + React `ErrorBoundary` |
-| **Security Headers** | `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection` |
-| **RBAC** | `authMiddleware` + `roleGuard()` for endpoint-level access control |
-| **Async Safety** | `asyncHandler()` wrapper prevents unhandled promise rejections |
-| **Environment Config** | `.env.example` with all configurable values |
 
 ---
 
@@ -122,59 +105,7 @@ npm run start      # Start production server
 
 ---
 
-## 🏗 Architecture
-
-```
-sehat-saathi/
-├── server/                    # Backend API
-│   ├── index.js               # Express + Socket.IO server entry
-│   ├── db.js                  # In-memory DataStore with seed data
-│   ├── middleware/
-│   │   ├── auth.js            # JWT auth + RBAC middleware
-│   │   └── utils.js           # Validation, sanitisation, error handling
-│   └── routes/
-│       ├── auth.js            # OTP login, demo login, session management
-│       ├── triage.js          # 3-stage triage engine with scoring algorithm
-│       ├── queue.js           # Priority queue with real-time updates
-│       ├── records.js         # ABHA health records API
-│       ├── pharmacy.js        # Inventory & prescription management
-│       ├── consultation.js    # Doctor consultation & Rx creation
-│       ├── heatmap.js         # Village disease surveillance data
-│       ├── appointments.js    # Appointment booking system
-│       └── stats.js           # Dashboard statistics
-├── src/                       # Frontend React App
-│   ├── main.jsx               # App entry with ErrorBoundary
-│   ├── App.jsx                # Router + context providers
-│   ├── index.css              # Design system (CSS custom properties)
-│   ├── context/
-│   │   ├── AuthContext.jsx    # JWT auth state management
-│   │   ├── ToastContext.jsx   # Toast notification system
-│   │   └── LanguageContext.jsx # i18n with 8 language translations
-│   ├── components/
-│   │   ├── Navbar.jsx         # Role-aware bottom navigation
-│   │   ├── VoiceTriage.jsx    # Speech-to-triage voice interface
-│   │   ├── LanguageSelector.jsx # Language picker modal
-│   │   └── ErrorBoundary.jsx  # Graceful error handling
-│   ├── lib/
-│   │   └── nlpEngine.js       # Multilingual symptom NLP extraction
-│   └── pages/
-│       ├── Landing.jsx        # Landing page with feature showcase
-│       ├── Login.jsx          # OTP-based authentication
-│       ├── PatientDashboard.jsx # Patient home with quick actions
-│       ├── Triage.jsx         # Voice + manual triage wizard
-│       ├── QueueStatus.jsx    # Real-time queue position tracker
-│       ├── HealthRecords.jsx  # Digital health records viewer
-│       ├── BookAppointment.jsx # Calendar-based appointment booking
-│       ├── SOS.jsx            # Emergency ambulance dispatch
-│       ├── DoctorDashboard.jsx # Queue mgmt + consultation + Rx builder
-│       ├── PharmacyDashboard.jsx # Inventory + analytics + Rx fulfillment
-│       └── Heatmap.jsx        # Leaflet disease surveillance map
-├── .env.example               # Environment configuration template
-├── .gitignore                 # Git ignore rules
-├── package.json               # Dependencies and scripts
-├── vite.config.js             # Vite configuration with API proxy
-└── index.html                 # HTML entry point with Leaflet CDN
-```
+    
 
 ### System Architecture Diagram
 
@@ -244,16 +175,6 @@ Chest pain, breathing difficulty, unconsciousness, severe bleeding, high fever, 
 
 ---
 
-## 📡 API Reference
-
-### Authentication
-
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/auth/send-otp` | Send OTP to phone | ❌ |
-| POST | `/api/auth/verify-otp` | Verify OTP → JWT | ❌ |
-| POST | `/api/auth/demo-login` | Instant demo login | ❌ |
-| GET | `/api/auth/me` | Get current user profile | ✅ |
 
 ### Triage
 
